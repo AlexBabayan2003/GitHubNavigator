@@ -43,14 +43,26 @@ android {
 
 dependencies {
 
+    //navigation
     implementation(libs.androidx.navigation.fragment.ktx.v275)
     implementation(libs.androidx.navigation.ui.ktx.v275)
+
+    //retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+
+    //room
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
+
+    //coroutines
     implementation(libs.kotlinx.coroutines.android)
+
+    //splashscreen
+    implementation (libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.constraintlayout)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
