@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.dashboard.UserRepositoriesFragment">
+    tools:context=".presentation.all_users.AllUsersFragment">
 
     <TextView
-        android:id="@+id/text_user_repositories_tv"
+        android:id="@+id/text_all_users_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

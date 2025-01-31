@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.home.ProfileFragment">
+    tools:context=".presentation.user_repositories.UserRepositoriesFragment">
 
     <TextView
-        android:id="@+id/text_profile_tv"
+        android:id="@+id/text_user_repositories_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

@@ -1,4 +1,4 @@
-package com.example.githubnavigator.presentation.dashboard
+package com.example.githubnavigator.presentation.user_repositories
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.githubnavigator.databinding.FragmentDashboardBinding
+import com.example.githubnavigator.databinding.FragmentUserRepositoriesBinding
 import kotlinx.coroutines.launch
 
 class UserRepositoriesFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
-    private val binding: FragmentDashboardBinding
+    private var _binding: FragmentUserRepositoriesBinding? = null
+    private val binding: FragmentUserRepositoriesBinding
         get() = _binding ?: throw IllegalStateException("Binding is null")
     private lateinit var userRepositoriesViewModel: UserRepositoriesViewModel
 
@@ -26,7 +26,7 @@ class UserRepositoriesFragment : Fragment() {
         userRepositoriesViewModel =
             ViewModelProvider(this)[UserRepositoriesViewModel::class.java]
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentUserRepositoriesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         viewLifecycleOwner.lifecycleScope.launch {
