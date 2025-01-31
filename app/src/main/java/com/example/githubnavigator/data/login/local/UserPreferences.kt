@@ -26,3 +26,5 @@ class UserPreferences @Inject constructor(
         sharedPreferences.edit().clear().apply()
     }
 }
+
+
