@@ -34,6 +34,10 @@ class UserRepositoryImpl @Inject constructor(
         return !username.isNullOrEmpty() && !token.isNullOrEmpty()
     }
 
+    override fun logout() {
+        userPreferences.clearCredentials()
+    }
+
 
     override fun getToken(): String? = userPreferences.getToken()
 }
