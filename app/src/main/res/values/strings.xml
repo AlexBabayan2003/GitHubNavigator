@@ -6,4 +6,5 @@
     <string name="profile">profile</string>
     <string name="users">users</string>
     <string name="repositories">repositories</string>
+    <string name="sign_in">Sign In</string>
 </resources>

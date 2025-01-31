@@ -1,4 +1,4 @@
-package com.example.githubnavigator.presentation.notifications
+package com.example.githubnavigator.presentation.all_users
 
 import android.os.Bundle
 import android.view.LayoutInflater

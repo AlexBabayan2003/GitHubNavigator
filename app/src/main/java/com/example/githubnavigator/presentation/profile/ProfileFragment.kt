@@ -1,7 +1,6 @@
 package com.example.githubnavigator.presentation.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,15 +39,6 @@ class ProfileFragment : Fragment() {
             val textView: TextView = binding.textProfileTv
             profileViewModel.text.collect {
                 textView.text = it
-            }
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            profileViewModel.isLoading.collect {
-                if (it) {
-                    Log.d("ProfileFragmentLoading", "LOADING")
-                } else {
-                    Log.d("ProfileFragmentLoading", "NOT LOADING")
-                }
             }
         }
     }
