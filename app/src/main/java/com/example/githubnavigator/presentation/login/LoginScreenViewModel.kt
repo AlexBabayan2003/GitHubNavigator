@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginScreenViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
 ) : ViewModel() {
 
     private val _loginUiState = MutableLiveData<LoginUiState>()
@@ -26,6 +26,7 @@ class LoginScreenViewModel @Inject constructor(
                 is AuthResult.Success -> {
                     _loginUiState.value = LoginUiState.Success
                 }
+
                 is AuthResult.Error -> {
                     _loginUiState.value = LoginUiState.Error(result.message)
                 }

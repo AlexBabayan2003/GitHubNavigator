@@ -28,7 +28,15 @@ class UserRepositoryImpl @Inject constructor(
             AuthResult.Error("Неверные учетные данные: ${e.message}")
         }
     }
+    override fun isUserLoggedIn(): Boolean {
+        val username = userPreferences.getUsername()
+        val token = userPreferences.getToken()
+        return !username.isNullOrEmpty() && !token.isNullOrEmpty()
+    }
 
+    override fun logout() {
+        userPreferences.clearCredentials()
+    }
 
 
     override fun getToken(): String? = userPreferences.getToken()
