@@ -4,6 +4,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     kotlin("plugin.serialization") version "2.0.21"
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -43,6 +44,10 @@ android {
 
 dependencies {
 
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
     //navigation
     implementation(libs.androidx.navigation.fragment.ktx.v275)
     implementation(libs.androidx.navigation.ui.ktx.v275)
@@ -75,4 +80,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+kapt {
+    correctErrorTypes = true
 }

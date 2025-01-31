@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.dashboard.UserRepositoriesFragment">
+    tools:context=".presentation.user_repositories.UserRepositoriesFragment">
 
     <TextView
         android:id="@+id/text_user_repositories_tv"

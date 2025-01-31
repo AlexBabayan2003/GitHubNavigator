@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login_screen_fragment"
-        android:name="com.example.githubnavigator.presentation.loginscreen.LoginScreenFragment"
+        android:name="com.example.githubnavigator.presentation.login.LoginScreenFragment"
         android:label="login_screen"
         tools:layout="@layout/fragment_login_screen">
         <action
@@ -25,13 +25,13 @@
 
     <fragment
         android:id="@+id/navigation_user_repositories"
-        android:name="com.example.githubnavigator.presentation.dashboard.UserRepositoriesFragment"
+        android:name="com.example.githubnavigator.presentation.user_repositories.UserRepositoriesFragment"
         android:label="User Repositories"
         tools:layout="@layout/fragment_user_repositories" />
 
     <fragment
         android:id="@+id/navigation_all_users"
-        android:name="com.example.githubnavigator.presentation.notifications.AllUsersFragment"
+        android:name="com.example.githubnavigator.presentation.all_users.AllUsersFragment"
         android:label="All Users"
         tools:layout="@layout/fragment_all_users" />
 </navigation>

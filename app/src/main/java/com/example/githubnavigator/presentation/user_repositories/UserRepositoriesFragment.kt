@@ -1,4 +1,4 @@
-package com.example.githubnavigator.presentation.dashboard
+package com.example.githubnavigator.presentation.user_repositories
 
 import android.os.Bundle
 import android.view.LayoutInflater
