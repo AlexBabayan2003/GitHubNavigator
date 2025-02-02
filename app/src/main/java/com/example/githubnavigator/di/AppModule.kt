@@ -2,8 +2,11 @@ package com.example.githubnavigator.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.example.githubnavigator.data.login.remote.AuthInterceptor
 import com.example.githubnavigator.data.login.remote.GithubApiService
+import com.example.githubnavigator.data.profile.ProfileDao
+import com.example.githubnavigator.data.profile.ProfileDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

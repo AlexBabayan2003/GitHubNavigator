@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_navigation_profile_to_login_screen_fragment"
             app:destination="@id/login_screen_fragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
@@ -38,4 +41,8 @@
         android:name="com.example.githubnavigator.presentation.all_users.AllUsersFragment"
         android:label="All Users"
         tools:layout="@layout/fragment_all_users" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.githubnavigator.presentation.settings.SettingsFragment"
+        android:label="Settings" />
 </navigation>

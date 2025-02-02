@@ -60,13 +60,14 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     //coroutines
     implementation(libs.kotlinx.coroutines.android)
 
     //splashscreen
     implementation (libs.androidx.core.splashscreen)
-
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.androidx.core.ktx)

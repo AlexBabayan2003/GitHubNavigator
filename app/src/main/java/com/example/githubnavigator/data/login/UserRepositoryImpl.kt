@@ -5,27 +5,33 @@ import com.example.githubnavigator.data.login.remote.GithubApiService
 import com.example.githubnavigator.domain.login.AuthResult
 import com.example.githubnavigator.domain.login.UserRepository
 import com.example.githubnavigator.data.login.local.UserPreferences
+import com.example.githubnavigator.domain.profile.ProfileEntity
+import com.example.githubnavigator.domain.profile.ProfileRepository
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val githubApiService: GithubApiService,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val profileRepository: ProfileRepository
 ) : UserRepository {
-
-    /**
-     * Attempts to "log in" by calling the GitHub API with the given token.
-     * This method uses the "Bearer" approach in the header for verification.
-     */
     override suspend fun login(username: String, token: String): AuthResult {
         return try {
-            // Save to prefs so interceptor can pick it up
             userPreferences.saveCredentials(username, token)
-            // Make the request (no param needed)
             val userResponse = githubApiService.getUser()
-            Log.d("SAVED_PREFS", "Saved username: $username, token: $token")
+            userPreferences.saveCredentials(userResponse.username, token)
+
+            val profile = ProfileEntity(
+                userId = userResponse.id,
+                username = userResponse.username,
+                fullName = userResponse.fullName,
+                bio = userResponse.bio,
+                avatarLocalUri = null
+            )
+            profileRepository.updateProfile(profile)
+
             AuthResult.Success(userResponse)
         } catch (e: Exception) {
-            AuthResult.Error("Неверные учетные данные: ${e.message}")
+            AuthResult.Error("Ошибка: ${e.message}")
         }
     }
     override fun isUserLoggedIn(): Boolean {
