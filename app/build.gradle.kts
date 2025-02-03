@@ -67,9 +67,10 @@ dependencies {
 
     //splashscreen
     implementation (libs.androidx.core.splashscreen)
+    //data store
     implementation(libs.androidx.datastore.preferences)
+    implementation (libs.glide)
     implementation(libs.androidx.constraintlayout)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

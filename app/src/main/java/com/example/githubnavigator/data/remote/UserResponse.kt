@@ -1,4 +1,4 @@
-package com.example.githubnavigator.data.login.remote.model
+package com.example.githubnavigator.data.remote
 
 import com.google.gson.annotations.SerializedName
 

@@ -3,15 +3,17 @@ package com.example.githubnavigator.presentation.settings
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.*
-import android.widget.Switch
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import com.example.githubnavigator.R
 
 class SettingsFragment : Fragment() {
 
-    private lateinit var switchDarkMode: Switch
+    private lateinit var switchDarkMode: SwitchCompat
     private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
@@ -22,7 +24,7 @@ class SettingsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val root = inflater.inflate(R.layout.fragment_settings, container, false)
         switchDarkMode = root.findViewById(R.id.switchDarkMode)

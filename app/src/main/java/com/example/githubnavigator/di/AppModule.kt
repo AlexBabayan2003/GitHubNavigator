@@ -2,11 +2,8 @@ package com.example.githubnavigator.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.room.Room
-import com.example.githubnavigator.data.login.remote.AuthInterceptor
-import com.example.githubnavigator.data.login.remote.GithubApiService
-import com.example.githubnavigator.data.profile.ProfileDao
-import com.example.githubnavigator.data.profile.ProfileDatabase
+import com.example.githubnavigator.data.remote.AuthInterceptor
+import com.example.githubnavigator.data.remote.GithubApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +21,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideSharedPreferences(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): SharedPreferences {
         return context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     }
@@ -32,7 +29,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        authInterceptor: AuthInterceptor
+        authInterceptor: AuthInterceptor,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
@@ -42,7 +39,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRetrofit(
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.github.com/")

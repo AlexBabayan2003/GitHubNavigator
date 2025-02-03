@@ -18,7 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.githubnavigator.R
-import com.example.githubnavigator.data.login.local.UserPreferences
+import com.example.githubnavigator.data.local.UserPreferences
 import com.example.githubnavigator.databinding.FragmentProfileBinding
 import com.example.githubnavigator.domain.profile.ProfileEntity
 import dagger.hilt.android.AndroidEntryPoint

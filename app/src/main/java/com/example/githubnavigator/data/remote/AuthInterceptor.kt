@@ -1,6 +1,6 @@
-package com.example.githubnavigator.data.login.remote
+package com.example.githubnavigator.data.remote
 
-import com.example.githubnavigator.data.login.local.UserPreferences
+import com.example.githubnavigator.data.local.UserPreferences
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

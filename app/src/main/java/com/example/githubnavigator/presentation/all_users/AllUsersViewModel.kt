@@ -1,13 +1,41 @@
 package com.example.githubnavigator.presentation.all_users
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.lifecycle.viewModelScope
+import com.example.githubnavigator.domain.allUsers.UserEntityDomain
 
-class AllUsersViewModel : ViewModel() {
+import com.example.githubnavigator.domain.allusers.GetAllUsersUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-    private val _text = MutableStateFlow("").apply {
-        value = "This is All Users Fragment"
+@HiltViewModel
+class AllUsersViewModel @Inject constructor(
+    private val getAllUsersUseCase: GetAllUsersUseCase,
+) : ViewModel() {
+
+    private val _users = MutableLiveData<List<UserEntityDomain>>(emptyList())
+    val users: LiveData<List<UserEntityDomain>> = _users
+
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _lastUserId = MutableLiveData(0)
+    val lastUserId: LiveData<Int> = _lastUserId
+
+    init {
+        loadUsers()
     }
-    val text: StateFlow<String> = _text
+
+    fun loadUsers() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            val newUsers = getAllUsersUseCase(_lastUserId.value ?: 0)
+            _users.value = (_users.value ?: emptyList()) + newUsers
+            _lastUserId.value = newUsers.lastOrNull()?.id ?: _lastUserId.value
+            _isLoading.value = false
+        }
+    }
 }

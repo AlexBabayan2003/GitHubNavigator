@@ -14,4 +14,6 @@ interface ProfileDao {
 
     @Query("DELETE FROM profile_table WHERE username = :username")
     suspend fun deleteProfileByUsername(username: String)
+
+
 }

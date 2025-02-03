@@ -1,10 +1,9 @@
 package com.example.githubnavigator.data.login
 
-import android.util.Log
-import com.example.githubnavigator.data.login.remote.GithubApiService
+import com.example.githubnavigator.data.local.UserPreferences
+import com.example.githubnavigator.data.remote.GithubApiService
 import com.example.githubnavigator.domain.login.AuthResult
 import com.example.githubnavigator.domain.login.UserRepository
-import com.example.githubnavigator.data.login.local.UserPreferences
 import com.example.githubnavigator.domain.profile.ProfileEntity
 import com.example.githubnavigator.domain.profile.ProfileRepository
 import javax.inject.Inject
@@ -12,7 +11,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val githubApiService: GithubApiService,
     private val userPreferences: UserPreferences,
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
 ) : UserRepository {
     override suspend fun login(username: String, token: String): AuthResult {
         return try {
@@ -34,6 +33,7 @@ class UserRepositoryImpl @Inject constructor(
             AuthResult.Error("Ошибка: ${e.message}")
         }
     }
+
     override fun isUserLoggedIn(): Boolean {
         val username = userPreferences.getUsername()
         val token = userPreferences.getToken()

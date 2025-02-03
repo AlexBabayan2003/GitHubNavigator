@@ -1,4 +1,4 @@
-package com.example.githubnavigator.data.login.local
+package com.example.githubnavigator.data.local
 
 import android.content.SharedPreferences
 import javax.inject.Inject

@@ -8,11 +8,15 @@ import dagger.hilt.android.HiltAndroidApp
 class MyApp : Application() {
 
     override fun onCreate() {
-        super.onCreate() // Call super.onCreate() first
+        super.onCreate()
 
         val sharedPreferences = getSharedPreferences("theme_prefs", MODE_PRIVATE)
         val isDark = sharedPreferences.getBoolean("is_dark", false)
 
+        theme(isDark)
+    }
+
+    private fun theme(isDark: Boolean) {
         if (isDark) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
