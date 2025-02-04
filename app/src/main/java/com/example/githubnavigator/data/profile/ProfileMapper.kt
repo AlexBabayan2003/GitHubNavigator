@@ -1,12 +1,11 @@
 package com.example.githubnavigator.data.profile
 
-import com.example.githubnavigator.data.profile.ProfileRoomEntity
-import com.example.githubnavigator.domain.profile.ProfileEntity
+import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 
 object ProfileMapper {
 
-    fun toDomain(roomEntity: ProfileRoomEntity): ProfileEntity {
-        return ProfileEntity(
+    fun toDomain(roomEntity: ProfileRoomEntity): ProfileDomainEntity {
+        return ProfileDomainEntity(
             userId = roomEntity.userId,
             username = roomEntity.username,
             fullName = roomEntity.fullName,
@@ -15,7 +14,7 @@ object ProfileMapper {
         )
     }
 
-    fun fromDomain(domainEntity: ProfileEntity): ProfileRoomEntity {
+    fun fromDomain(domainEntity: ProfileDomainEntity): ProfileRoomEntity {
         return ProfileRoomEntity(
             userId = domainEntity.userId,
             username = domainEntity.username,

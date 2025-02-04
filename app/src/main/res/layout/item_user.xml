@@ -13,7 +13,8 @@
         android:layout_height="48dp"
         android:contentDescription="@string/user_image"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_profile" />
+        tools:src="@drawable/ic_profile"
+        />
 
     <TextView
         android:id="@+id/usernameTextView"

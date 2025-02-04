@@ -20,7 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.githubnavigator.R
 import com.example.githubnavigator.data.local.UserPreferences
 import com.example.githubnavigator.databinding.FragmentProfileBinding
-import com.example.githubnavigator.domain.profile.ProfileEntity
+import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -131,7 +131,7 @@ class ProfileFragment : Fragment() {
     }
 
 
-    private fun updateUI(profile: ProfileEntity?) {
+    private fun updateUI(profile: ProfileDomainEntity?) {
         if (profile == null) {
             binding.textUsername.text = "Unknown"
             binding.imageAvatar.setImageResource(R.drawable.ic_profile)

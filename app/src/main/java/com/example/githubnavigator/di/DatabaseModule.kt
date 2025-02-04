@@ -2,8 +2,9 @@ package com.example.githubnavigator.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.githubnavigator.data.allUsers.AllUsersDao
+import com.example.githubnavigator.data.local.AppDatabase
 import com.example.githubnavigator.data.profile.ProfileDao
-import com.example.githubnavigator.data.profile.ProfileDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,19 +18,31 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideProfileDatabase(
+    fun provideAppDatabase(
         @ApplicationContext context: Context
-    ): ProfileDatabase {
+    ): AppDatabase {
         return Room.databaseBuilder(
             context,
-            ProfileDatabase::class.java,
-            "profile_db"
-        ).build()
+            AppDatabase::class.java,
+            "app_db" // Use a single database name
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides
     @Singleton
-    fun provideProfileDao(db: ProfileDatabase): ProfileDao {
+    fun provideProfileDao(db: AppDatabase): ProfileDao {
         return db.profileDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideAllUsersDao(db: AppDatabase): AllUsersDao {
+        return db.allUsersDao()
+    }
+
+
+
+
 }

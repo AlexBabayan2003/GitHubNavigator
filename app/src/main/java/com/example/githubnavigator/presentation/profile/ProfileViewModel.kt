@@ -3,12 +3,11 @@ package com.example.githubnavigator.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubnavigator.domain.profile.GetProfileUseCase
-import com.example.githubnavigator.domain.profile.ProfileEntity
+import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 import com.example.githubnavigator.domain.profile.UpdateProfileUseCase
 import com.example.githubnavigator.domain.profile.UserLogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +26,8 @@ class ProfileViewModel @Inject constructor(
         userLogoutUseCase.invoke()
     }
 
-    private val _profileState = MutableStateFlow<ProfileEntity?>(null)
-    val profileState: StateFlow<ProfileEntity?> = _profileState.asStateFlow()
+    private val _profileState = MutableStateFlow<ProfileDomainEntity?>(null)
+    val profileState: StateFlow<ProfileDomainEntity?> = _profileState.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -46,7 +45,7 @@ class ProfileViewModel @Inject constructor(
     }
 
 
-    fun updateProfile(profile: ProfileEntity) {
+    fun updateProfile(profile: ProfileDomainEntity) {
         viewModelScope.launch {
             _isLoading.value = true
             updateProfileUseCase(profile)

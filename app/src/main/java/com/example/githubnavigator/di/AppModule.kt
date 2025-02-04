@@ -50,7 +50,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGithubApiService(retrofit: Retrofit): GithubApiService {
+    fun provideGetUserApiService(retrofit: Retrofit): GithubApiService {
         return retrofit.create(GithubApiService::class.java)
     }
+
 }

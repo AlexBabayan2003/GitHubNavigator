@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/navigation_all_users"
-        android:name="com.example.githubnavigator.presentation.all_users.AllUsersFragment"
+        android:name="com.example.githubnavigator.presentation.allUsers.AllUsersFragment"
         android:label="All Users"
         tools:layout="@layout/fragment_all_users" />
     <fragment

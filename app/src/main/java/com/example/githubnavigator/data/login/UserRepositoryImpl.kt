@@ -4,7 +4,7 @@ import com.example.githubnavigator.data.local.UserPreferences
 import com.example.githubnavigator.data.remote.GithubApiService
 import com.example.githubnavigator.domain.login.AuthResult
 import com.example.githubnavigator.domain.login.UserRepository
-import com.example.githubnavigator.domain.profile.ProfileEntity
+import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 import com.example.githubnavigator.domain.profile.ProfileRepository
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class UserRepositoryImpl @Inject constructor(
             val userResponse = githubApiService.getUser()
             userPreferences.saveCredentials(userResponse.username, token)
 
-            val profile = ProfileEntity(
+            val profile = ProfileDomainEntity(
                 userId = userResponse.id,
                 username = userResponse.username,
                 fullName = userResponse.fullName,

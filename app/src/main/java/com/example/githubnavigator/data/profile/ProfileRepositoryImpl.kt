@@ -1,25 +1,24 @@
 package com.example.githubnavigator.data.profile
 
 
-import android.util.Log
-import com.example.githubnavigator.domain.profile.ProfileEntity
+import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 import com.example.githubnavigator.domain.profile.ProfileRepository
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
-    private val profileDao: ProfileDao
+    private val profileDao: ProfileDao,
 ) : ProfileRepository {
 
-    override suspend fun getProfile(username: String): ProfileEntity? {
-        Log.d("ProfileRepoImpl", "Loading profile for username = $username")
-        val roomEntity = profileDao.getProfileByUsername(username)
-        Log.d("ProfileRepoImpl", "entity = $roomEntity")
-        return roomEntity?.let { ProfileMapper.toDomain(it) }
-    }
+    override suspend fun getProfile(username: String): ProfileDomainEntity? =
+        withContext(Dispatchers.IO) {
+            val profileRoomEntity = profileDao.getProfileByUsername(username)
+            profileRoomEntity?.let { ProfileMapper.toDomain(it) }
+        }
 
-    override suspend fun updateProfile(profile: ProfileEntity) {
-        val roomEntity = ProfileMapper.fromDomain(profile)
-        profileDao.insertProfile(roomEntity)
-    }
+    override suspend fun updateProfile(profile: ProfileDomainEntity) =
+        withContext(Dispatchers.IO) {
+            profileDao.insertProfile(ProfileMapper.fromDomain(profile))
+        }
 }

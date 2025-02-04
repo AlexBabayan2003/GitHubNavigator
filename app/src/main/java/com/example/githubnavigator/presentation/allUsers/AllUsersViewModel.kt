@@ -1,12 +1,11 @@
-package com.example.githubnavigator.presentation.all_users
+package com.example.githubnavigator.presentation.allUsers
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.githubnavigator.domain.allUsers.GetAllUsersUseCase
 import com.example.githubnavigator.domain.allUsers.UserEntityDomain
-
-import com.example.githubnavigator.domain.allusers.GetAllUsersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,11 +1,9 @@
-package com.example.githubnavigator.domain.allusers
+package com.example.githubnavigator.domain.allUsers
 
-import com.example.githubnavigator.domain.allUsers.AllUsersRepository
-import com.example.githubnavigator.domain.allUsers.UserEntityDomain
 import javax.inject.Inject
 
 class GetAllUsersUseCase @Inject constructor(
-    private val allUsersRepository: AllUsersRepository
+    private val allUsersRepository: AllUsersRepository,
 ) {
     suspend operator fun invoke(since: Int): List<UserEntityDomain> {
         return allUsersRepository.getAllUsers(since)

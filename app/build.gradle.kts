@@ -69,7 +69,9 @@ dependencies {
     implementation (libs.androidx.core.splashscreen)
     //data store
     implementation(libs.androidx.datastore.preferences)
+    //glide
     implementation (libs.glide)
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

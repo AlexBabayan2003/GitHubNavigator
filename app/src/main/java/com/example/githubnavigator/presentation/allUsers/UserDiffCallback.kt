@@ -1,4 +1,4 @@
-package com.example.githubnavigator.presentation.all_users
+package com.example.githubnavigator.presentation.allUsers
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.githubnavigator.domain.allUsers.UserEntityDomain

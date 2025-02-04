@@ -1,4 +1,4 @@
-package com.example.githubnavigator.presentation.all_users
+package com.example.githubnavigator.presentation.allUsers
 
 import android.os.Bundle
 import android.view.LayoutInflater

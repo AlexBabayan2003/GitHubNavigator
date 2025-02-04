@@ -1,6 +1,6 @@
 package com.example.githubnavigator.di
 
-import com.example.githubnavigator.data.allusers.AllUsersRepositoryImpl
+import com.example.githubnavigator.data.allUsers.AllUsersRepositoryImpl
 import com.example.githubnavigator.domain.allUsers.AllUsersRepository
 import dagger.Binds
 import dagger.Module
@@ -14,7 +14,7 @@ abstract class AllUsersRepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindProfileRepository(
+    abstract fun bindAllUsersRepository(
         impl: AllUsersRepositoryImpl,
     ): AllUsersRepository
 }
