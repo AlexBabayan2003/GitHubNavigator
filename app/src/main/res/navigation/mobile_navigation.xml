@@ -32,9 +32,9 @@
 
     <fragment
         android:id="@+id/navigation_user_repositories"
-        android:name="com.example.githubnavigator.presentation.user_repositories.UserRepositoriesFragment"
+        android:name="com.example.githubnavigator.presentation.userRepos.UserReposFragment"
         android:label="User Repositories"
-        tools:layout="@layout/fragment_user_repositories" />
+        tools:layout="@layout/fragment_user_repos" />
 
     <fragment
         android:id="@+id/navigation_all_users"

@@ -1,4 +1,4 @@
-package com.example.githubnavigator.di
+package com.example.githubnavigator.di.repositoryModule
 
 import com.example.githubnavigator.data.allUsers.AllUsersRepositoryImpl
 import com.example.githubnavigator.domain.allUsers.AllUsersRepository

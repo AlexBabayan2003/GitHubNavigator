@@ -1,6 +1,5 @@
 package com.example.githubnavigator.data.login
 
-import com.example.githubnavigator.data.local.UserPreferences
 import com.example.githubnavigator.data.remote.GithubApiService
 import com.example.githubnavigator.domain.login.AuthResult
 import com.example.githubnavigator.domain.login.UserRepository

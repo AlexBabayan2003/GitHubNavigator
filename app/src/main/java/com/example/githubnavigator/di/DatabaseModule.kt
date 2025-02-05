@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.githubnavigator.data.allUsers.AllUsersDao
 import com.example.githubnavigator.data.local.AppDatabase
 import com.example.githubnavigator.data.profile.ProfileDao
+import com.example.githubnavigator.data.userRepo.UserReposDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,6 +44,10 @@ object DatabaseModule {
     }
 
 
-
+    @Provides
+    @Singleton
+    fun provideUserReposDao(db: AppDatabase): UserReposDao {
+        return db.userReposDao()
+    }
 
 }

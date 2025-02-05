@@ -12,25 +12,6 @@ class AllUsersRepositoryImpl @Inject constructor(
     private val allUsersDao: AllUsersDao,
 ) : AllUsersRepository {
 
-//    override suspend fun getAllUsers(since: Int): List<UserEntityDomain> {
-//        val response = allUsersApi.getAllUsers(since)
-//        allUsersDao.insertUsers(response.map {
-//            AllUsersRoomEntity(
-//                id = it.id,
-//                username = it.username,
-//                avatarUrl = it.avatarUrl
-//            )
-//        })
-//
-//        return response.map {
-//            UserEntityDomain(
-//                id = it.id,
-//                username = it.username,
-//                avatarUrl = it.avatarUrl
-//            )
-//        }
-//    }
-
     override suspend fun getAllUsers(since: Int): List<UserEntityDomain> = withContext(Dispatchers.IO) {
         val cachedUsers = allUsersDao.getAllUsers()
         if (cachedUsers.isNotEmpty()) {

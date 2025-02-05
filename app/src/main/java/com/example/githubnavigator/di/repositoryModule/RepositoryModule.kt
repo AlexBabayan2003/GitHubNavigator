@@ -1,4 +1,4 @@
-package com.example.githubnavigator.di
+package com.example.githubnavigator.di.repositoryModule
 
 import com.example.githubnavigator.data.login.UserRepositoryImpl
 import com.example.githubnavigator.domain.login.UserRepository
