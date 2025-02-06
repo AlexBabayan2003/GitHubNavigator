@@ -79,7 +79,9 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.navigation_profile,
                 R.id.navigation_user_repositories,
-                R.id.navigation_all_users
+                R.id.navigation_all_users,
+                R.id.login_screen_fragment,
+                R.id.userDetailsFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
