@@ -7,4 +7,6 @@
     <string name="users">users</string>
     <string name="repositories">repositories</string>
     <string name="sign_in">Sign In</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="user_image">user image</string>
 </resources>
