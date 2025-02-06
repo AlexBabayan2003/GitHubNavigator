@@ -60,15 +60,19 @@ dependencies {
     //room
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     //coroutines
     implementation(libs.kotlinx.coroutines.android)
 
     //splashscreen
     implementation (libs.androidx.core.splashscreen)
-
+    //data store
+    implementation(libs.androidx.datastore.preferences)
+    //glide
+    implementation (libs.glide)
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
     implementation(libs.androidx.constraintlayout)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

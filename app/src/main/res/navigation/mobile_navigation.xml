@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
@@ -14,28 +15,48 @@
             android:id="@+id/action_login_screen_fragment_to_navigation_profile"
             app:destination="@id/navigation_profile"
             app:popUpTo="@id/login_screen_fragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.githubnavigator.presentation.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_navigation_profile_to_login_screen_fragment"
             app:destination="@id/login_screen_fragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_user_repositories"
-        android:name="com.example.githubnavigator.presentation.user_repositories.UserRepositoriesFragment"
+        android:name="com.example.githubnavigator.presentation.userRepos.UserReposFragment"
         android:label="User Repositories"
-        tools:layout="@layout/fragment_user_repositories" />
+        tools:layout="@layout/fragment_user_repos" />
 
     <fragment
         android:id="@+id/navigation_all_users"
-        android:name="com.example.githubnavigator.presentation.all_users.AllUsersFragment"
+        android:name="com.example.githubnavigator.presentation.allUsers.AllUsersFragment"
         android:label="All Users"
-        tools:layout="@layout/fragment_all_users" />
+        tools:layout="@layout/fragment_all_users">
+        <action
+            android:id="@+id/action_navigation_all_users_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.githubnavigator.presentation.settings.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.example.githubnavigator.presentation.userDetails.UserDetailsFragment"
+        android:label="User Details">
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
 </navigation>
