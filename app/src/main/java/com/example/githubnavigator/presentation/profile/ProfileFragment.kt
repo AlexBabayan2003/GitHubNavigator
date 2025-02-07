@@ -22,8 +22,10 @@ import com.example.githubnavigator.data.login.UserPreferences
 import com.example.githubnavigator.databinding.FragmentProfileBinding
 import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -120,7 +122,9 @@ class ProfileFragment : Fragment() {
 
         // Logout
         binding.btnLogout.setOnClickListener {
-            profileViewModel.logout()
+            viewLifecycleOwner.lifecycleScope.launch {
+                profileViewModel.logout()
+            }
             navController.navigate(R.id.action_navigation_profile_to_login_screen_fragment)
         }
     }

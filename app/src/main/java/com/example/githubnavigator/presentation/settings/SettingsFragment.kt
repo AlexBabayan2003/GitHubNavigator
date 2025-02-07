@@ -35,16 +35,12 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(THEME_PREFS, Context.MODE_PRIVATE)
 
-        // Узнаём, что сохранено в prefs
         val isDark = sharedPreferences.getBoolean(KEY_IS_DARK, false)
         switchDarkMode.isChecked = isDark
 
-        // Ставим слушатель переключения
         switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
-            // Запоминаем в prefs
             sharedPreferences.edit().putBoolean(KEY_IS_DARK, isChecked).apply()
 
-            // Применяем тему
             if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {

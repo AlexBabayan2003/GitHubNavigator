@@ -1,19 +1,31 @@
 package com.example.githubnavigator.data.login
 
+import androidx.room.withTransaction
+import com.example.githubnavigator.data.allUsers.AllUsersDao
+import com.example.githubnavigator.data.local.AppDatabase
+import com.example.githubnavigator.data.profile.ProfileDao
 import com.example.githubnavigator.data.remote.GithubApiService
+import com.example.githubnavigator.data.userRepo.UserReposDao
 import com.example.githubnavigator.domain.login.AuthResult
 import com.example.githubnavigator.domain.login.UserRepository
 import com.example.githubnavigator.domain.profile.ProfileDomainEntity
 import com.example.githubnavigator.domain.profile.ProfileRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val githubApiService: GithubApiService,
     private val userPreferences: UserPreferences,
+    private val profileDao: ProfileDao,
+    private val userReposDao: UserReposDao,
+    private val database: AppDatabase,
+    private val allUsersDao: AllUsersDao,
     private val profileRepository: ProfileRepository,
 ) : UserRepository {
-    override suspend fun login(username: String, token: String): AuthResult {
-        return try {
+
+    override suspend fun login(username: String, token: String): AuthResult = withContext(Dispatchers.IO) {
+        return@withContext try {
             userPreferences.saveCredentials(username, token)
             val userResponse = githubApiService.getUser()
             userPreferences.saveCredentials(userResponse.username, token)
@@ -29,9 +41,10 @@ class UserRepositoryImpl @Inject constructor(
 
             AuthResult.Success(userResponse)
         } catch (e: Exception) {
-            AuthResult.Error("Ошибка: ${e.message}")
+            AuthResult.Error("ERROR: ${e.message}")
         }
     }
+
 
     override fun isUserLoggedIn(): Boolean {
         val username = userPreferences.getUsername()
@@ -39,10 +52,16 @@ class UserRepositoryImpl @Inject constructor(
         return !username.isNullOrEmpty() && !token.isNullOrEmpty()
     }
 
-    override fun logout() {
-        userPreferences.clearCredentials()
+    override suspend fun logout() {
+        withContext(Dispatchers.IO) {
+            database.withTransaction { // Wrap in a transaction
+                userPreferences.clearCredentials()
+                profileDao.deleteProfile()
+                userReposDao.deleteAllRepos()
+                allUsersDao.deleteAllUsers()
+            }
+        }
     }
-
 
     override fun getToken(): String? = userPreferences.getToken()
 }

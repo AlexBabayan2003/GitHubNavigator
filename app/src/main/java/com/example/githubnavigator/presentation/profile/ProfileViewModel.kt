@@ -22,7 +22,7 @@ class ProfileViewModel @Inject constructor(
     private val updateProfileUseCase: UpdateProfileUseCase
 ) : ViewModel() {
 
-    fun logout() {
+    suspend fun logout() {
         userLogoutUseCase.invoke()
     }
 

@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         get() = _binding ?: throw RuntimeException("ActivityMainBinding == null")
 
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
 
     private lateinit var viewModel: MainViewModel
@@ -75,13 +76,11 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        val appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_profile,
                 R.id.navigation_user_repositories,
-                R.id.navigation_all_users,
-                R.id.login_screen_fragment,
-                R.id.userDetailsFragment
+                R.id.navigation_all_users
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -112,6 +111,10 @@ class MainActivity : AppCompatActivity() {
 
         zoomX.start()
         zoomY.start()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun onDestroy() {

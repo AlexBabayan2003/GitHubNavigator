@@ -28,7 +28,7 @@ class AllUsersViewModel @Inject constructor(
         loadUsers()
     }
 
-    fun loadUsers() {
+    private fun loadUsers() {
         viewModelScope.launch {
             _isLoading.value = true
             val newUsers = getAllUsersUseCase(_lastUserId.value ?: 0)

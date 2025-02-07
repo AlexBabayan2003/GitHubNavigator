@@ -41,16 +41,14 @@ class LoginScreenFragment : Fragment() {
         loginScreenViewModel.loginUiState.observe(viewLifecycleOwner, Observer { uiState ->
             when (uiState) {
                 is LoginUiState.Loading -> {
-                    // Показать индикатор загрузки
+                    // Show loading
                 }
 
                 is LoginUiState.Success -> {
-                    // Переход в основной экран
                     navController.navigate(LoginScreenFragmentDirections.actionLoginScreenFragmentToNavigationProfile())
                 }
 
                 is LoginUiState.Error -> {
-                    // Показать ошибку через SnackBar
                     Snackbar.make(view, uiState.message, Snackbar.LENGTH_LONG).show()
                 }
             }

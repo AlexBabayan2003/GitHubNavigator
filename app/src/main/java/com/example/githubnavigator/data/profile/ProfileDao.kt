@@ -12,7 +12,7 @@ interface ProfileDao {
     @Update
     suspend fun updateProfile(profile: ProfileRoomEntity)
 
-    @Query("DELETE FROM profile_table WHERE username = :username")
-    suspend fun deleteProfileByUsername(username: String)
+    @Query("DELETE FROM profile_table")
+    suspend fun deleteProfile()
 
 }

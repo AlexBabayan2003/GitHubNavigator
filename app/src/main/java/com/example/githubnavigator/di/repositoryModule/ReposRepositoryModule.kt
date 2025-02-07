@@ -1,6 +1,6 @@
 package com.example.githubnavigator.di.repositoryModule
 
-import com.example.githubnavigator.data.userRepos.UserReposRepositoryImpl
+import com.example.githubnavigator.data.userRepo.UserReposRepositoryImpl
 import com.example.githubnavigator.domain.userRepos.UserReposRepository
 import dagger.Binds
 import dagger.Module

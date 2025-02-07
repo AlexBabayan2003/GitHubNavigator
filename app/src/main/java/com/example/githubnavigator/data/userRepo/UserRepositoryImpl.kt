@@ -1,9 +1,7 @@
-package com.example.githubnavigator.data.userRepos
+package com.example.githubnavigator.data.userRepo
 
 import android.util.Log
 import com.example.githubnavigator.data.remote.GithubApiService
-import com.example.githubnavigator.data.userRepo.UserReposDao
-import com.example.githubnavigator.data.userRepo.UserReposMapper
 import com.example.githubnavigator.domain.userRepos.UserReposDomainEntity
 import com.example.githubnavigator.domain.userRepos.UserReposRepository
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +11,7 @@ import javax.inject.Inject
 
 class UserReposRepositoryImpl @Inject constructor(
     private val userReposDao: UserReposDao,
-    private val githubApiService: GithubApiService
+    private val githubApiService: GithubApiService,
 ) : UserReposRepository {
     override suspend fun getUserRepos(page: Int, perPage: Int): List<UserReposDomainEntity> =
         withContext(Dispatchers.IO) {
