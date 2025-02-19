@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.githubnavigator.data.remote.UserResponse
 import com.example.githubnavigator.databinding.ItemUserBinding
+import com.example.githubnavigator.domain.allUsers.UserResponseDomain
 
 class AllUsersAdapter(private val onUserClick: (String) -> Unit) :
-    ListAdapter<UserResponse, AllUsersAdapter.UserViewHolder>(UserDiffCallback()) {
+    ListAdapter<UserResponseDomain, AllUsersAdapter.UserViewHolder>(UserDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,7 +26,7 @@ class AllUsersAdapter(private val onUserClick: (String) -> Unit) :
         private val binding: ItemUserBinding,
         private val onUserClick: (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: UserResponse) {
+        fun bind(user: UserResponseDomain) {
             binding.usernameTextView.text = user.username
             Glide.with(binding.root.context)
                 .load(user.avatarUrl)
@@ -38,12 +38,12 @@ class AllUsersAdapter(private val onUserClick: (String) -> Unit) :
         }
     }
 
-    class UserDiffCallback : DiffUtil.ItemCallback<UserResponse>() {
-        override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+    class UserDiffCallback : DiffUtil.ItemCallback<UserResponseDomain>() {
+        override fun areItemsTheSame(oldItem: UserResponseDomain, newItem: UserResponseDomain): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+        override fun areContentsTheSame(oldItem: UserResponseDomain, newItem: UserResponseDomain): Boolean {
             return oldItem == newItem
         }
     }

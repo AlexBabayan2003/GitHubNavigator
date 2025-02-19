@@ -1,18 +1,22 @@
 package com.example.githubnavigator.data.userDetails
 
 import com.example.githubnavigator.data.remote.GithubApiService
+import com.example.githubnavigator.di.IoDispatcher
 import com.example.githubnavigator.domain.userDetails.UserDetailsDomainEntity
 import com.example.githubnavigator.domain.userDetails.UserDetailsRepository
 import com.example.githubnavigator.domain.userDetails.UserRepoDomainEntity
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UserDetailsRepositoryImpl @Inject constructor(
-    private val githubApiService: GithubApiService
+    private val githubApiService: GithubApiService,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+
 ) : UserDetailsRepository {
     override suspend fun getUserDetails(username: String): UserDetailsDomainEntity =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             val response = githubApiService.getUserDetails(username)
             UserDetailsMapper.fromResponse(response)
         }

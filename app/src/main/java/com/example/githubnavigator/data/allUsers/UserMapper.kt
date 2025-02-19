@@ -1,31 +1,23 @@
 package com.example.githubnavigator.data.allUsers
 
 import com.example.githubnavigator.data.remote.UserResponse
-import com.example.githubnavigator.domain.allUsers.UserEntityDomain
+import com.example.githubnavigator.domain.allUsers.UserResponseDomain
 
 object UserMapper {
 
-    fun toDomain(roomEntity: AllUsersRoomEntity): UserEntityDomain {
-        return UserEntityDomain(
-            id = roomEntity.id,
-            username = roomEntity.username,
-            avatarUrl = roomEntity.avatarUrl
-        )
-    }
 
-    fun fromDomain(userEntity: UserEntityDomain): AllUsersRoomEntity {
+    fun fromDomain(userResponseDomain: UserResponseDomain): AllUsersRoomEntity {
         return AllUsersRoomEntity(
-            id = userEntity.id,
-            username = userEntity.username,
-            avatarUrl = userEntity.avatarUrl
+            username = userResponseDomain.username,
+            id = userResponseDomain.id,
+            avatarUrl = userResponseDomain.avatarUrl,
         )
     }
-
-    fun fromResponse(response: UserResponse): AllUsersRoomEntity {
-        return AllUsersRoomEntity(
-            id = response.id,
-            username = response.username,
-            avatarUrl = response.avatarUrl
-        )
-    }
+fun toDomain(userEntity: AllUsersRoomEntity): UserResponseDomain {
+    return UserResponseDomain(
+        username = userEntity.username,
+        id = userEntity.id,
+        avatarUrl = userEntity.avatarUrl,
+    )
+}
 }

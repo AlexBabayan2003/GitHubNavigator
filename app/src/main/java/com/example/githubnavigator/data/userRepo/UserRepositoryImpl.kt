@@ -2,9 +2,10 @@ package com.example.githubnavigator.data.userRepo
 
 import android.util.Log
 import com.example.githubnavigator.data.remote.GithubApiService
+import com.example.githubnavigator.di.IoDispatcher
 import com.example.githubnavigator.domain.userRepos.UserReposDomainEntity
 import com.example.githubnavigator.domain.userRepos.UserReposRepository
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
@@ -12,9 +13,10 @@ import javax.inject.Inject
 class UserReposRepositoryImpl @Inject constructor(
     private val userReposDao: UserReposDao,
     private val githubApiService: GithubApiService,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : UserReposRepository {
     override suspend fun getUserRepos(page: Int, perPage: Int): List<UserReposDomainEntity> =
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             try {
                 val cachedRepos = userReposDao.getAllRepos()
                 if (cachedRepos.isNotEmpty() && page == 1) {

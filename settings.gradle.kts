@@ -18,7 +18,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
+//enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "GitHub Navigator"
 include(":app")
  

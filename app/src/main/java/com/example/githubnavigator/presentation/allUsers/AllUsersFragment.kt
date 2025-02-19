@@ -13,7 +13,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubnavigator.databinding.FragmentAllUsersBinding
-import com.example.githubnavigator.domain.allUsers.UserEntityDomain
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -36,45 +35,40 @@ class AllUsersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        observeViewModel()
+    }
 
+    private fun setupRecyclerView() {
         adapter = AllUsersAdapter { username ->
             Log.d("AllUsersFragment", "Navigating to details for: $username")
-            val action = AllUsersFragmentDirections.actionNavigationAllUsersToUserDetailsFragment(username)
+            val action =
+                AllUsersFragmentDirections.actionNavigationAllUsersToUserDetailsFragment(username)
             findNavController().navigate(action)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
 
+    private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.users.observe(viewLifecycleOwner) { users ->
-                    adapter.submitList(users.map { it.toUserResponse() })
+                launch {
+                    viewModel.users.observe(viewLifecycleOwner) { users ->
+                        adapter.submitList(users)
+                    }
                 }
+//                launch {
+//                    viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+//                        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+//                    }
+//                }
             }
         }
-
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-//                    binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-//                }
-//            }
-//        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun UserEntityDomain.toUserResponse() =
-        avatarUrl?.let {
-            com.example.githubnavigator.data.remote.UserResponse(
-                username = username,
-                id = id,
-                avatarUrl = it,
-                fullName = "",
-                bio = ""
-            )
-        }
 }
