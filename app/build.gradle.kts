@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.example.githubnavigator"
         minSdk = 24
-        targetSdk = 34
+//        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -67,11 +67,36 @@ dependencies {
 
     //splashscreen
     implementation (libs.androidx.core.splashscreen)
+
     //data store
     implementation(libs.androidx.datastore.preferences)
+
     //glide
     implementation (libs.glide)
-    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    kapt(libs.compiler)
+
+
+    //modules
+    implementation(projects.featureLogin.domain)
+    implementation(projects.featureLogin.presentation)
+    implementation(projects.featureLogin.data)
+    implementation(projects.featureProfile.presentation)
+    implementation(projects.featureProfile.domain)
+    implementation(projects.featureProfile.data)
+    implementation(projects.featureProfile.database)
+    implementation(projects.featureUserRepos.presentation)
+    implementation(projects.featureUserRepos.domain)
+    implementation(projects.featureUserRepos.data)
+    implementation(projects.featureUserRepos.database)
+    implementation(projects.featureAllUsers.presentation)
+    implementation(projects.featureAllUsers.domain)
+    implementation(projects.featureAllUsers.data)
+    implementation(projects.featureAllUsers.database)
+    implementation(projects.core)
+    implementation(projects.appDatabase)
+
+
+
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

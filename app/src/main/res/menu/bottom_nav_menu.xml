@@ -2,9 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_profile"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/profile" />
+        android:id="@+id/navigation_user_repositories_fragment"
+        android:icon="@drawable/ic_repositories"
+        android:title="@string/repositories" />
+
 
     <item
         android:id="@+id/navigation_all_users"
@@ -12,8 +13,8 @@
         android:title="@string/users" />
 
     <item
-        android:id="@+id/navigation_user_repositories"
-        android:icon="@drawable/ic_repositories"
-        android:title="@string/repositories" />
+        android:id="@+id/navigation_profile_fragment"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile" />
 
 </menu>

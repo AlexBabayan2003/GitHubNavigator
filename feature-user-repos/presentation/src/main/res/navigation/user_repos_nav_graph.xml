@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/navigation_user_repositories_fragment"
+    android:id="@+id/user_repos_navigation">
+    <fragment
+        android:id="@+id/navigation_user_repositories_fragment"
+        android:name="com.example.presentation_user_repos.UserReposFragment"
+        android:label="User Repositories"
+        />
+</navigation>
