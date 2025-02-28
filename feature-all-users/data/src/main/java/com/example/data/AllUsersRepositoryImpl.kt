@@ -17,19 +17,23 @@ class AllUsersRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : AllUsersRepository {
 
-    override suspend fun getAllUsers(since: Int): List<User> =
-        withContext(ioDispatcher) {
-            val cachedUsers = allUsersDao.getAllUsers(since)
-
-
-            if (cachedUsers.isNotEmpty()) {
-                return@withContext cachedUsers.map { userEntity -> userMapper.toDomain(userEntity) }
-            } else {
-                val response = allUsersApi.getAllUsers(since)
-                val users = response.map { userResponseDomainMapper.fromResponse(it) }
-                val usersEntity = users.map { userMapper.fromDomain(it) }
-                allUsersDao.insertUsers(usersEntity)
-                return@withContext users
+    override suspend fun getAllUsers(since: Int): Result<List<User>> =
+        runCatching {
+            withContext(ioDispatcher) {
+                val cachedUsers = allUsersDao.getAllUsers(since)
+                if (cachedUsers.isNotEmpty()) {
+                    return@withContext cachedUsers.map { userEntity ->
+                        userMapper.toDomain(
+                            userEntity
+                        )
+                    }
+                } else {
+                    val response = allUsersApi.getAllUsers(since)
+                    val users = response.map { userResponseDomainMapper.fromResponse(it) }
+                    val usersEntity = users.map { userMapper.fromDomain(it) }
+                    allUsersDao.insertUsers(usersEntity)
+                    return@withContext users
+                }
             }
         }
 }

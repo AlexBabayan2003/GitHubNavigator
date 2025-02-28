@@ -7,19 +7,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.core.extension.collectLatestLifecycleFlow
 import com.example.domain.userDetails.UserDetails
 import com.example.presentation.userDetails.UserReposAdapter
 import com.example.presentation_all_users.databinding.FragmentUserDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserDetailsFragment : Fragment() {
@@ -61,7 +56,7 @@ class UserDetailsFragment : Fragment() {
         }
 
         collectLatestLifecycleFlow(viewModel.isLoading) { isLoading ->
-            binding.progressBar.visibility= if (isLoading) View.VISIBLE else View.GONE
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
         collectLatestLifecycleFlow(viewModel.errorState) { error ->
@@ -71,17 +66,6 @@ class UserDetailsFragment : Fragment() {
         }
     }
 
-    private fun <T> Fragment.collectLatestLifecycleFlow(
-        flow: Flow<T>,
-        collect: suspend (T) -> Unit,
-    ) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                flow.collectLatest {
-                    collect(it)}
-            }
-        }
-    }
     private fun updateUserDetailsUI(userDetails: UserDetails?) {
         if (userDetails != null) {
             binding.usernameTextView.text = userDetails.username
@@ -90,6 +74,7 @@ class UserDetailsFragment : Fragment() {
                 .into(binding.userImageView)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

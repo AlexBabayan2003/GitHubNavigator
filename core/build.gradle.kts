@@ -38,6 +38,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android.v250)
+    implementation(libs.androidx.lifecycle.runtime.android)
     kapt(libs.hilt.compiler)
 
     // Retrofit

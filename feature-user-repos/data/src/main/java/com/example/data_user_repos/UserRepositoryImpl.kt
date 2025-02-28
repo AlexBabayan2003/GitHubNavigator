@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
+import kotlin.runCatching
 
 class UserReposRepositoryImpl @Inject constructor(
     private val userReposDao: UserReposDao,
@@ -16,11 +17,12 @@ class UserReposRepositoryImpl @Inject constructor(
     private val userReposMapper: UserReposMapper,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserReposRepository {
-    override suspend fun getUserRepos(page: Int, perPage: Int): List<UserRepos> =
+    override suspend fun getUserRepos(page: Int, perPage: Int): Result<List<UserRepos>> =
         withContext(ioDispatcher) {
-            try {
+            runCatching {
                 val cachedRepos = userReposDao.getAllRepos()
                 if (cachedRepos.isNotEmpty() && page == 1) {
+                    // Return cached repos for first page
                     cachedRepos.map { userReposMapper.toDomain(it) }
                 } else {
                     val response = githubApiService.getUserRepos(page, perPage)
@@ -31,12 +33,17 @@ class UserReposRepositoryImpl @Inject constructor(
                     userReposDao.insertAll(repos)
                     repos.map { userReposMapper.toDomain(it) }
                 }
-            } catch (e: IOException) {
-                val cachedRepos = userReposDao.getAllRepos()
-                if (cachedRepos.isNotEmpty()) {
-                    cachedRepos.map { userReposMapper.toDomain(it) }
+            }.recoverCatching { throwable ->
+                // If an IOException occurs, try to provide cached repos
+                if (throwable is IOException) {
+                    val cachedRepos = userReposDao.getAllRepos()
+                    if (cachedRepos.isNotEmpty()) {
+                        cachedRepos.map { userReposMapper.toDomain(it) }
+                    } else {
+                        throw Exception("Network error and no cached data available", throwable)
+                    }
                 } else {
-                    throw Exception("Network error and no cached data available", e)
+                    throw throwable
                 }
             }
         }

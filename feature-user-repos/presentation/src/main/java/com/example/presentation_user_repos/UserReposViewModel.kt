@@ -41,19 +41,19 @@ class UserReposViewModel @Inject constructor(
         _errorState.value = null
         _isLoading.value = true
         viewModelScope.launch {
-            try {
-                val repos = getUserReposUseCase(_currentPage, _perPage)
-                _reposState.value = _reposState.value + repos
-                _hasMoreData.value = repos.isNotEmpty()
-                _currentPage++
-            } catch (e: Exception) {
-                Log.e("UserReposViewModel", "Error loading repos: ${e.message}")
-                _errorState.value = "Failed to load repositories: ${e.message}"
-                _hasMoreData.value = false
-                _isError = true
-            } finally {
-                _isLoading.value = false
-            }
+            getUserReposUseCase(_currentPage, _perPage)
+                .onSuccess { repos ->
+                    _reposState.value += repos
+                    _hasMoreData.value = repos.isNotEmpty()
+                    _currentPage++
+                }
+                .onFailure { error ->
+                    Log.e("UserReposViewModel", "Error loading repos: ${error.message}")
+                    _errorState.value = "Failed to load repositories: ${error.message}"
+                    _hasMoreData.value = false
+                    _isError = true
+                }
+            _isLoading.value = false
         }
     }
 }

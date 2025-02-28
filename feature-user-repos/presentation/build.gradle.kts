@@ -51,6 +51,7 @@ dependencies {
     implementation(projects.featureUserRepos.domain)
     implementation(projects.featureProfile.domain)
     implementation(projects.featureLogin.data)
+    implementation(projects.core)
 
 
     implementation (libs.androidx.constraintlayout)

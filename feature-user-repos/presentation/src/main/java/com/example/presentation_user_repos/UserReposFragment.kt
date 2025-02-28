@@ -7,15 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.core.extension.collectLatestLifecycleFlow as collect
 import com.example.presentation.user.repos.databinding.FragmentUserReposBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserReposFragment : Fragment() {
@@ -28,7 +23,7 @@ class UserReposFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentUserReposBinding.inflate(inflater, container, false)
         return binding.root
@@ -41,30 +36,17 @@ class UserReposFragment : Fragment() {
         binding.reposRecyclerView.adapter = adapter
         binding.reposRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        collectLatestLifecycleFlow(viewModel.reposState) { repos ->
+        collect(viewModel.reposState) { repos ->
             adapter.submitList(repos)
         }
 
-        collectLatestLifecycleFlow(viewModel.isLoading) { isLoading ->
+        collect(viewModel.isLoading) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        collectLatestLifecycleFlow(viewModel.errorState) { error ->
+        collect(viewModel.errorState) { error ->
             if (!error.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun <T> Fragment.collectLatestLifecycleFlow(
-        flow: Flow<T>,
-        collect: suspend (T) -> Unit,
-    ) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                flow.collectLatest {
-                    collect(it)
-                }
             }
         }
     }

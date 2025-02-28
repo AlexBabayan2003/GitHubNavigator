@@ -8,9 +8,7 @@ import com.example.data.remote.UserApi
 import com.example.database_all_users.AllUsersDao
 import com.example.database_profile.ProfileDao
 import com.example.database_user_repos.UserReposDao
-import com.example.domain.AuthResult
 import com.example.domain.Profile
-import com.example.domain.ProfileRepository
 import com.example.domain.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -23,14 +21,17 @@ class UserRepositoryImpl @Inject constructor(
     private val userReposDao: UserReposDao,
     private val database: AppDatabase,
     private val allUsersDao: AllUsersDao,
-    private val profileRepository: ProfileRepository,
+    private val profileRepository: com.example.domain.ProfileRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : UserRepository {
 
-    override suspend fun login(username: String, token: String): AuthResult = withContext(ioDispatcher) {
-        return@withContext try {
+    override suspend fun login(username: String, token: String): Result<Any> = withContext(ioDispatcher) {
+        runCatching {
+            // Save initial credentials
             userPreferences.saveCredentials(username, token)
+            // Retrieve user info from the API
             val userResponse = githubApiService.getUser()
+            // Update credentials with verified username
             userPreferences.saveCredentials(userResponse.username, token)
 
             val profile = Profile(
@@ -41,13 +42,10 @@ class UserRepositoryImpl @Inject constructor(
                 avatarLocalUri = null
             )
             profileRepository.updateProfile(profile)
-
-            AuthResult.Success(userResponse)
-        } catch (e: Exception) {
-            AuthResult.Error("ERROR: ${e.message}")
+            // Return the user response on success
+            userResponse
         }
     }
-
 
     override fun isUserLoggedIn(): Boolean {
         val username = userPreferences.getUsername()

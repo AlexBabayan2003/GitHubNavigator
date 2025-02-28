@@ -33,7 +33,6 @@ class ProfileViewModel @Inject constructor(
     fun loadProfile(username: String) {
         viewModelScope.launch {
             _isLoading.value = true
-
             _profileState.value = getProfileUseCase(username)
             _isLoading.value = false
         }
