@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain_user_repos.GetUserReposUseCase
-import com.example.domain_user_repos.UserReposDomainEntity
+import com.example.domain_user_repos.UserRepos
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,14 +16,13 @@ class UserReposViewModel @Inject constructor(
     private val getUserReposUseCase: GetUserReposUseCase
 ) : ViewModel() {
 
-    private val _reposState = MutableStateFlow<List<UserReposDomainEntity>>(emptyList())
-    val reposState: StateFlow<List<UserReposDomainEntity>> = _reposState
+    private val _reposState = MutableStateFlow<List<UserRepos>>(emptyList())
+    val reposState: StateFlow<List<UserRepos>> = _reposState
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
     private val _hasMoreData = MutableStateFlow(true)
-    val hasMoreData: StateFlow<Boolean> = _hasMoreData
 
     private val _errorState = MutableStateFlow<String?>(null)
     val errorState: StateFlow<String?> = _errorState
@@ -36,7 +35,8 @@ class UserReposViewModel @Inject constructor(
         loadRepos()
     }
 
-    fun loadRepos() {
+
+    private fun loadRepos() {
         if (_isLoading.value || !_hasMoreData.value || _isError) return
         _errorState.value = null
         _isLoading.value = true

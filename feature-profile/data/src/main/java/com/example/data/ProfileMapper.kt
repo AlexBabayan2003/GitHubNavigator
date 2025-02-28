@@ -1,13 +1,14 @@
 package com.example.data
 
 import com.example.database_profile.ProfileRoomEntity
-import com.example.domain.ProfileDomainEntity
+import com.example.domain.Profile
+import javax.inject.Inject
 
 
-object ProfileMapper {
+class ProfileMapper @Inject constructor() {
 
-    fun toDomain(roomEntity: ProfileRoomEntity): ProfileDomainEntity {
-        return ProfileDomainEntity(
+    fun toDomain(roomEntity: ProfileRoomEntity): Profile {
+        return Profile(
             userId = roomEntity.userId,
             username = roomEntity.username,
             fullName = roomEntity.fullName,
@@ -16,7 +17,7 @@ object ProfileMapper {
         )
     }
 
-    fun fromDomain(domainEntity: ProfileDomainEntity): ProfileRoomEntity {
+    fun fromDomain(domainEntity: Profile): ProfileRoomEntity {
         return ProfileRoomEntity(
             userId = domainEntity.userId,
             username = domainEntity.username,

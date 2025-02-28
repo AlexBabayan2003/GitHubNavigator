@@ -1,12 +1,11 @@
 package com.example.presentation_all_user.userDetails
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.userDetails.GetUserDetailsUseCase
 import com.example.domain.userDetails.GetUserReposUseCase
-import com.example.domain.userDetails.UserDetailsDomainEntity
-import com.example.domain.userDetails.UserRepoDomainEntity
+import com.example.domain.userDetails.UserDetails
+import com.example.domain.userDetails.UserRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,14 +15,14 @@ import javax.inject.Inject
 @HiltViewModel
 class UserDetailsViewModel @Inject constructor(
     private val getUserDetailsUseCase: GetUserDetailsUseCase,
-    private val getUserReposUseCase: GetUserReposUseCase
+    private val getUserReposUseCase: GetUserReposUseCase,
 ) : ViewModel() {
 
-    private val _userDetailsState = MutableStateFlow<UserDetailsDomainEntity?>(null)
-    val userDetailsState: StateFlow<UserDetailsDomainEntity?> = _userDetailsState
+    private val _userDetailsState = MutableStateFlow<UserDetails?>(null)
+    val userDetailsState: StateFlow<UserDetails?> = _userDetailsState
 
-    private val _userReposState = MutableStateFlow<List<UserRepoDomainEntity>>(emptyList())
-    val userReposState: StateFlow<List<UserRepoDomainEntity>> = _userReposState
+    private val _userReposState = MutableStateFlow<List<UserRepo>>(emptyList())
+    val userReposState: StateFlow<List<UserRepo>> = _userReposState
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -32,22 +31,39 @@ class UserDetailsViewModel @Inject constructor(
     val errorState: StateFlow<String?> = _errorState
 
     fun loadUserDetails(username: String) {
-        Log.d("UserDetailsViewModel", "loadUserDetails called for: $username")
         _isLoading.value = true
         viewModelScope.launch {
-            try {
-                val userDetails = getUserDetailsUseCase(username)
-                Log.d("UserDetailsViewModel", "User details loaded: $userDetails")
+            val userDetailsResult = getUserDetailsResult(username)
+            val userReposResult = getUserReposResult(username)
+
+            userDetailsResult.onSuccess { userDetails ->
                 _userDetailsState.value = userDetails
-                val userRepos = getUserReposUseCase(username)
-                Log.d("UserDetailsViewModel", "User repos loaded: $userRepos")
-                _userReposState.value = userRepos
-            } catch (e: Exception) {
-                Log.e("UserDetailsViewModel", "Error loading user details: ${e.message}")
-                _errorState.value = "Failed to load user details: ${e.message}"
-            } finally {
-                _isLoading.value = false
             }
+                .onFailure { e ->
+                    _errorState.value = "Failed to load user details: ${e.message}"
+                }
+
+            userReposResult
+                .onSuccess { userRepos ->
+                    _userReposState.value = userRepos
+                }
+                .onFailure { e ->
+                    _errorState.value = "Failed to load user repos: ${e.message}"
+                }
+            _isLoading.value = false
         }
     }
+
+    private suspend fun getUserDetailsResult(username: String): Result<UserDetails> {
+        return runCatching {
+            getUserDetailsUseCase(username)
+        }
+    }
+
+    private suspend fun getUserReposResult(username: String): Result<List<UserRepo>> {
+        return runCatching {
+            getUserReposUseCase(username)
+        }
+    }
+
 }

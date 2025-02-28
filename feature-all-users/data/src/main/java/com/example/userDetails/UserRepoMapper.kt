@@ -1,10 +1,11 @@
 package com.example.userDetails
 
-import com.example.domain.userDetails.UserRepoDomainEntity
+import com.example.domain.userDetails.UserRepo
+import javax.inject.Inject
 
-object UserRepoMapper {
-    fun fromResponse(response: UserRepoResponse): UserRepoDomainEntity {
-        return UserRepoDomainEntity(
+class UserRepoMapper @Inject constructor() {
+    fun fromResponse(response: UserRepoResponse): UserRepo {
+        return UserRepo(
             id = response.id,
             name = response.name,
         )

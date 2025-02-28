@@ -1,10 +1,11 @@
 package com.example.userDetails
 
-import com.example.domain.userDetails.UserDetailsDomainEntity
+import com.example.domain.userDetails.UserDetails
+import javax.inject.Inject
 
-object UserDetailsMapper {
-    fun fromResponse(response: UserDetailsResponse): UserDetailsDomainEntity {
-        return UserDetailsDomainEntity(
+class UserDetailsMapper @Inject constructor() {
+    fun fromResponse(response: UserDetailsResponse): UserDetails {
+        return UserDetails(
             username = response.username,
             avatarUrl = response.avatarUrl,
         )

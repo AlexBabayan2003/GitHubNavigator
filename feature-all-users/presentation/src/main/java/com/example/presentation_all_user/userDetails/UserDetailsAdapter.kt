@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.userDetails.UserRepoDomainEntity
+import com.example.domain.userDetails.UserRepo
 import com.example.presentation_all_users.databinding.ItemUserRepoBinding
 
 class UserReposAdapter :
-    ListAdapter<UserRepoDomainEntity, UserReposAdapter.UserRepoViewHolder>(UserRepoDiffCallback()) {
+    ListAdapter<UserRepo, UserReposAdapter.UserRepoViewHolder>(UserRepoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRepoViewHolder {
         val binding =
@@ -24,22 +24,22 @@ class UserReposAdapter :
 
     class UserRepoViewHolder(private val binding: ItemUserRepoBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(repo: UserRepoDomainEntity) {
+        fun bind(repo: UserRepo) {
             binding.repoNameTextView.text = repo.name
         }
     }
 
-    class UserRepoDiffCallback : DiffUtil.ItemCallback<UserRepoDomainEntity>() {
+    class UserRepoDiffCallback : DiffUtil.ItemCallback<UserRepo>() {
         override fun areItemsTheSame(
-            oldItem: UserRepoDomainEntity,
-            newItem: UserRepoDomainEntity
+            oldItem: UserRepo,
+            newItem: UserRepo
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: UserRepoDomainEntity,
-            newItem: UserRepoDomainEntity
+            oldItem: UserRepo,
+            newItem: UserRepo
         ): Boolean {
             return oldItem == newItem
         }

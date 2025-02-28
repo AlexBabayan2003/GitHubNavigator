@@ -13,16 +13,17 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.example.core.data.local.UserPreferences
-import com.example.domain.ProfileDomainEntity
+import com.example.domain.Profile
 import com.example.presentation.profile.R
 import com.example.presentation.profile.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -98,52 +99,47 @@ class ProfileFragment : Fragment() {
             profileViewModel.loadProfile(username)
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch(Dispatchers.IO) {
-                    profileViewModel.profileState.collectLatest { profile ->
-                        withContext(Dispatchers.Main) {
-                            updateUI(profile)
-                        }
-                    }
-                }
-                launch(Dispatchers.IO) {
-                    profileViewModel.isLoading.collectLatest { isLoading ->
-                        withContext(Dispatchers.Main){
-                            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-                            binding.imageAvatar.visibility =
-                                if (isLoading) View.INVISIBLE else View.VISIBLE
-                        }
-
+        viewLifecycleOwner.launchWhenStarted {
+            launch(Dispatchers.IO) {
+                profileViewModel.profileState.collectLatest { profile ->
+                    withContext(Dispatchers.Main) {
+                        updateUI(profile)
                     }
                 }
             }
-        }
-        //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
-
-        binding.imageAvatar.setOnClickListener {
-            pickImageLauncher.launch(arrayOf("image/*"))
+            launch {
+                profileViewModel.isLoading.collectLatest { isLoading ->
+                    withContext(Dispatchers.Main) {
+                        binding.progressBar.visibility =
+                            if (isLoading) View.VISIBLE else View.GONE
+                        binding.imageAvatar.visibility =
+                            if (isLoading) View.INVISIBLE else View.VISIBLE
+                    }
+                }
+            }
         }
 
         binding.btnLogout.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 profileViewModel.logout()
             }
-            navController
-                .navigate(
-                    ProfileFragmentDirections
-                        .actionNavigationProfileFragmentToLoginScreenFragment(),
-                )
+            navController.navigate(
+                ProfileFragmentDirections
+                    .actionNavigationProfileFragmentToLoginScreenFragment()
+            )
+        }
+        binding.imageAvatar.setOnClickListener {
+            pickImageLauncher.launch(arrayOf("image/*"))
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun LifecycleOwner.launchWhenStarted(block: suspend CoroutineScope.() -> Unit) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED, block)
+        }
     }
 
-
-    private fun updateUI(profile: ProfileDomainEntity?) {
+    private fun updateUI(profile: Profile?) {
         if (profile == null) {
             binding.textUsername.text = "Unknown"
             binding.imageAvatar.setImageResource(R.drawable.ic_profile)
@@ -153,7 +149,6 @@ class ProfileFragment : Fragment() {
 
             if (!profile.avatarLocalUri.isNullOrEmpty()) {
                 val uri = Uri.parse(profile.avatarLocalUri)
-                val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 val persistedUriPermissions =
                     requireContext().contentResolver.persistedUriPermissions
                 val hasPermission =
@@ -169,5 +164,9 @@ class ProfileFragment : Fragment() {
                 binding.imageAvatar.setImageResource(R.drawable.ic_profile)
             }
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

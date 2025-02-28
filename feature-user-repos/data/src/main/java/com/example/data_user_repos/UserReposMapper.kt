@@ -1,9 +1,10 @@
 package com.example.data_user_repos
 
-import com.example.domain_user_repos.UserReposDomainEntity
+import com.example.domain_user_repos.UserRepos
+import javax.inject.Inject
 
 
-object UserReposMapper {
+class UserReposMapper @Inject constructor() {
 
     fun fromResponse(response: UserReposResponse): com.example.database_user_repos.UserReposRoomEntity {
         return com.example.database_user_repos.UserReposRoomEntity(
@@ -12,8 +13,8 @@ object UserReposMapper {
         )
     }
 
-    fun toDomain(roomEntity: com.example.database_user_repos.UserReposRoomEntity): UserReposDomainEntity {
-        return UserReposDomainEntity(
+    fun toDomain(roomEntity: com.example.database_user_repos.UserReposRoomEntity): UserRepos {
+        return UserRepos(
             id = roomEntity.id,
             name = roomEntity.name
         )

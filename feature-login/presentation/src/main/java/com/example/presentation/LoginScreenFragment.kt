@@ -5,23 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.example.presentation.login.R
 import com.example.presentation.login.databinding.FragmentLoginScreenBinding
-import com.example.presentation_user_repos.UserReposFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -31,12 +26,13 @@ import kotlinx.coroutines.launch
 class LoginScreenFragment : Fragment() {
 
     private var _binding: FragmentLoginScreenBinding? = null
-    private val binding get() = _binding ?: throw RuntimeException("FragmentLoginScreenBinding == null")
+    private val binding
+        get() = _binding ?: throw RuntimeException("FragmentLoginScreenBinding == null")
     private val loginScreenViewModel: LoginScreenViewModel by viewModels()
     private lateinit var navController: NavController
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginScreenBinding.inflate(inflater, container, false)
         return binding.root
@@ -46,10 +42,8 @@ class LoginScreenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
-        // Adjust bottom margin of the login button based on system navigation bar height.
         updateViewMargin()
 
-        // Observe the UI state.
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginScreenViewModel.loginUiState.collectLatest { uiState ->
@@ -57,11 +51,13 @@ class LoginScreenFragment : Fragment() {
                         is LoginUiState.Loading -> {
                             // Show loading indicator if needed.
                         }
+
                         is LoginUiState.Success -> {
                             navController.navigate(
                                 LoginScreenFragmentDirections.actionLoginScreenFragmentNavToUserReposFragment()
                             )
                         }
+
                         is LoginUiState.Error -> {
                             Snackbar.make(view, uiState.message, Snackbar.LENGTH_LONG).show()
                         }
@@ -75,7 +71,7 @@ class LoginScreenFragment : Fragment() {
             val token = binding.passwordEt.text.toString()
             loginScreenViewModel.login(username, token)
         }
-        val backPressed = object : OnBackPressedCallback(true){
+        val backPressed = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 requireActivity().finish()
             }
@@ -88,15 +84,14 @@ class LoginScreenFragment : Fragment() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val navBarHeight = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
             binding.btnLogin.updateLayoutParams<ConstraintLayout.LayoutParams> {
-                bottomMargin = navBarHeight + dpToPx(20)
+                bottomMargin = navBarHeight + dpToPx()
             }
             insets
         }
     }
 
-    private fun dpToPx(dp: Int): Int =
+    private fun dpToPx(dp: Int = 20): Int =
         (dp * resources.displayMetrics.density).toInt()
-
 
 
     override fun onDestroyView() {

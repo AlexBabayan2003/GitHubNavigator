@@ -13,6 +13,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.presentation.user.repos.databinding.FragmentUserReposBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -39,28 +41,29 @@ class UserReposFragment : Fragment() {
         binding.reposRecyclerView.adapter = adapter
         binding.reposRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.reposState.collect { repos ->
-                    adapter.submitList(repos)
-                }
-            }
+        collectLatestLifecycleFlow(viewModel.reposState) { repos ->
+            adapter.submitList(repos)
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isLoading.collect { isLoading ->
-                    binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-                }
-            }
+        collectLatestLifecycleFlow(viewModel.isLoading) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
+        collectLatestLifecycleFlow(viewModel.errorState) { error ->
+            if (!error.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun <T> Fragment.collectLatestLifecycleFlow(
+        flow: Flow<T>,
+        collect: suspend (T) -> Unit,
+    ) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.errorState.collect { error ->
-                    if (!error.isNullOrEmpty()) {
-                        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-                    }
+                flow.collectLatest {
+                    collect(it)
                 }
             }
         }

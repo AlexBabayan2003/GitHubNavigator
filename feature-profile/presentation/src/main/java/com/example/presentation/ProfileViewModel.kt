@@ -3,31 +3,29 @@ package com.example.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.GetProfileUseCase
-import com.example.domain.ProfileDomainEntity
+import com.example.domain.Profile
 import com.example.domain.UpdateProfileUseCase
 import com.example.domain.UserLogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val userLogoutUseCase: UserLogoutUseCase,
     private val getProfileUseCase: GetProfileUseCase,
-    private val updateProfileUseCase: UpdateProfileUseCase
+    private val updateProfileUseCase: UpdateProfileUseCase,
 ) : ViewModel() {
 
     suspend fun logout() {
         userLogoutUseCase.invoke()
     }
 
-    private val _profileState = MutableStateFlow<ProfileDomainEntity?>(null)
-    val profileState: StateFlow<ProfileDomainEntity?> = _profileState.asStateFlow()
+    private val _profileState = MutableStateFlow<Profile?>(null)
+    val profileState: StateFlow<Profile?> = _profileState.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -36,16 +34,13 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
 
-            val profile = withContext(Dispatchers.IO) {
-                getProfileUseCase(username)
-            }
-            _profileState.value = profile
+            _profileState.value = getProfileUseCase(username)
             _isLoading.value = false
         }
     }
 
 
-    fun updateProfile(profile: ProfileDomainEntity) {
+    fun updateProfile(profile: Profile) {
         viewModelScope.launch {
             _isLoading.value = true
             updateProfileUseCase(profile)

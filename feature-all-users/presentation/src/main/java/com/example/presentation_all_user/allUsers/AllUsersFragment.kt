@@ -1,7 +1,6 @@
 package com.example.presentation_all_user.allUsers
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +43,6 @@ class AllUsersFragment : Fragment() {
 
     private fun setupRecyclerView() {
         adapter = AllUsersAdapter { username ->
-            Log.d("AllUsersFragment", "Navigating to details for: $username")
             val action =
                 AllUsersFragmentDirections.actionNavigationAllUsersToUserDetailsFragment(username)
             findNavController().navigate(action)
@@ -76,9 +74,6 @@ class AllUsersFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.users.collect { users ->
-//                        val currentList = adapter.currentList.toMutableList()
-//                        currentList.addAll(users)
-//                        adapter.submitList(currentList)
                         adapter.submitList(users)
                     }
                 }

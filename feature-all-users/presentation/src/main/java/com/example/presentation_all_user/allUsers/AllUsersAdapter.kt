@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.domain.UserResponseDomain
+import com.example.domain.User
 import com.example.presentation_all_users.databinding.ItemUserBinding
 
 class AllUsersAdapter(private val onUserClick: (String) -> Unit) :
-    ListAdapter<UserResponseDomain, AllUsersAdapter.UserViewHolder>(UserDiffCallback()){
+    ListAdapter<User, AllUsersAdapter.UserViewHolder>(UserDiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val binding = ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,7 +26,7 @@ class AllUsersAdapter(private val onUserClick: (String) -> Unit) :
         private val binding: ItemUserBinding,
         private val onUserClick: (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: UserResponseDomain) {
+        fun bind(user: User) {
             binding.usernameTextView.text = user.username
             Glide.with(binding.root.context)
                 .load(user.avatarUrl)
@@ -38,12 +38,12 @@ class AllUsersAdapter(private val onUserClick: (String) -> Unit) :
         }
     }
 
-    class UserDiffCallback : DiffUtil.ItemCallback<UserResponseDomain>() {
-        override fun areItemsTheSame(oldItem: UserResponseDomain, newItem: UserResponseDomain): Boolean {
+    class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: UserResponseDomain, newItem: UserResponseDomain): Boolean {
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem == newItem
         }
     }

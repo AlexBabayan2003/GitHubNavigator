@@ -3,24 +3,25 @@ package com.example.data
 import com.example.domain.ProfileRepository
 import com.example.core.di.IoDispatcher
 import com.example.database_profile.ProfileDao
-import com.example.domain.ProfileDomainEntity
+import com.example.domain.Profile
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
     private val profileDao: ProfileDao,
+    private val profileMapper: ProfileMapper,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : ProfileRepository {
 
-    override suspend fun getProfile(username: String): ProfileDomainEntity? =
+    override suspend fun getProfile(username: String): Profile? =
         withContext(ioDispatcher) {
             val profileRoomEntity = profileDao.getProfileByUsername(username)
-            profileRoomEntity?.let { ProfileMapper.toDomain(it) }
+            profileRoomEntity?.let { profileMapper.toDomain(it) }
         }
 
-    override suspend fun updateProfile(profile: ProfileDomainEntity) =
+    override suspend fun updateProfile(profile: Profile) =
         withContext(ioDispatcher) {
-            profileDao.insertProfile(ProfileMapper.fromDomain(profile))
+            profileDao.insertProfile(profileMapper.fromDomain(profile))
         }
 }

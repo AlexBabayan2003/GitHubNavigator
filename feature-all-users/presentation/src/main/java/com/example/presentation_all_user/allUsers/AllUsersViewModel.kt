@@ -3,7 +3,7 @@ package com.example.presentation_all_user.allUsers
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.GetAllUsersUseCase
-import com.example.domain.UserResponseDomain
+import com.example.domain.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,8 +15,8 @@ class AllUsersViewModel @Inject constructor(
     private val getAllUsersUseCase: GetAllUsersUseCase,
 ) : ViewModel() {
 
-    private val _users = MutableStateFlow<List<UserResponseDomain>>(emptyList())
-    val users: StateFlow<List<UserResponseDomain>> = _users
+    private val _users = MutableStateFlow<List<User>>(emptyList())
+    val users: StateFlow<List<User>> = _users
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading

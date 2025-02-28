@@ -1,6 +1,6 @@
 package com.example.domain
 
-data class ProfileDomainEntity(
+data class Profile(
     val userId: Int,
     val username: String,
     val fullName: String?,

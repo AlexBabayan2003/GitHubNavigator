@@ -9,7 +9,7 @@ import com.example.database_all_users.AllUsersDao
 import com.example.database_profile.ProfileDao
 import com.example.database_user_repos.UserReposDao
 import com.example.domain.AuthResult
-import com.example.domain.ProfileDomainEntity
+import com.example.domain.Profile
 import com.example.domain.ProfileRepository
 import com.example.domain.UserRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -33,7 +33,7 @@ class UserRepositoryImpl @Inject constructor(
             val userResponse = githubApiService.getUser()
             userPreferences.saveCredentials(userResponse.username, token)
 
-            val profile = ProfileDomainEntity(
+            val profile = Profile(
                 userId = userResponse.id,
                 username = userResponse.username,
                 fullName = userResponse.fullName,
@@ -57,7 +57,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun logout() {
         withContext(ioDispatcher) {
-            database.withTransaction { // Wrap in a transaction
+            database.withTransaction {
                 userPreferences.clearCredentials()
                 profileDao.deleteProfile()
                 userReposDao.deleteAllRepos()
